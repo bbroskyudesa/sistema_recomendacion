@@ -123,10 +123,18 @@ async def get_stats():
     ## ADVERTISERS UNICOS	
 
     # Query para adv unicos top_20
-    top_20_query = "SELECT DISTINCT adv_id FROM top_20"
+    top_20_query = """
+    	SELECT DISTINCT adv_id 
+    	FROM top_20
+    	WHERE CAST(fecha_recom AS DATE) BETWEEN (current_date - interval '6 days') AND current_date
+    """
 
     # Query para adv unicos top_20_ctr
-    top_20_ctr_query = "SELECT DISTINCT adv_id FROM top_20_ctr"
+    top_20_ctr_query = """
+    	SELECT DISTINCT adv_id 
+    	FROM top_20
+    	WHERE CAST(fecha_recom AS DATE) BETWEEN (current_date - interval '6 days') AND current_date
+    """
 
     # Traemos resultados
     top_20_cursor, top_20_results = run_query(top_20_query)
@@ -292,8 +300,8 @@ async def get_stats():
         
     
     return {
-        "Cantidad de advertisers": count_unique_adv_id,
-        "Advertisers activos": unique_adv_id,
+        "Cantidad de advertisers en los últimos 7 días": count_unique_adv_id,
+        "Advertisers activos en los últimos 7 días": unique_adv_id,
         "Top 3 advertisers con más productos únicos recomendados en los últimos 7 días": top_mas_cambios,
         "Top 3 advertisers con menos productos únicos recomendados en los últimos 7 días": top_menos_cambios,
         "Top 3 de productos más recomendados por advertiser en los últimos 7 días": top_products_por_advertiser,
