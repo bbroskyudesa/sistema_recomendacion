@@ -115,7 +115,14 @@ def group_by_date(rows):
         if date not in grouped_data:
             grouped_data[date] = []
         grouped_data[date].append(product_id)
-    return grouped_data
+    
+    # Ordenamos para mostrar los registros mas nuevos primero
+    sorted_dates = sorted(grouped_data.keys(), reverse=True)
+    
+    # Generamos diccionario ordenado
+    sorted_grouped_data = {date: grouped_data[date] for date in sorted_dates}
+    
+    return sorted_grouped_data
 
 @app.get("/stats/")
 async def get_stats():
